@@ -1,0 +1,29 @@
+{
+  "name": "brunch-to-the-future",
+  "version": "0.0.0",
+  "description": "Brunch skeleton for Ember with ES6 Modules",
+  "authors": [
+    "Matthew Marcum"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.1.1",
+    "ember": "~1.4.0",
+    "ember-data": "~1.0.0",
+    "ember-localstorage-adapter": "~0.2.0",
+    "modernizr": "~2.7.1"
+  },
+  "overrides": {
+    "modernizr": {
+      "main": "modernizr.js",
+      "dependencies": {}
+    }
+  }
+}

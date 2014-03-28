@@ -1,0 +1,22 @@
+<div id="confirmDeleteNoteDialog" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header centerAlign">
+				<h1 class="centerAlign">Delete selected note?</h1>
+			</div>
+		<div class="modal-body">
+				Are you sure you want to delete the selected Note?
+				This action cannot be be undone!
+		</div>
+		<div class="modal-footer">
+			<button class="btn btn-default"
+				{{action "doCancelDelete"}}>
+					Cancel
+			</button>
+			<button class="btn btn-primary"
+				{{action "doConfirmDelete"}}>
+				Delete Note
+			</button>
+		</div>
+	</div>
+</div>

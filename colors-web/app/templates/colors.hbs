@@ -1,0 +1,10 @@
+<h2>Welcome to Ember.js</h2>
+<ul>
+  {{#each controller}}
+    <li {{action 'removeColor' this}} >{{color}}</li>
+  {{/each}}
+</ul>
+<p>Click a color to remove it!</p>
+<p>{{input action="addColor" type="text" value=colorToAdd placeholder="Enter a color"}}
+    <button class="button" {{action 'addColor' this}}>Add</button>
+</p>

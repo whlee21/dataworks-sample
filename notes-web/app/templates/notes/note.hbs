@@ -1,0 +1,5 @@
+        <div id="selectedNote">
+            <h1>name: {{name}}</h1>
+            {{view Ember.TextArea valueBinding="value"}}
+            <button class="btn btn-primary form-control mediumTopPadding" {{action "updateNote"}}>Update</button><br />
+        </div>

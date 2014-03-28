@@ -1,0 +1,6 @@
+/.settings
+/.classpath
+/.project
+/public
+bower_components
+node_modules
