@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>emberjs</groupId>
+	<artifactId>sample-emberjs</artifactId>
+	<version>0.1</version>
+	<packaging>pom</packaging>
+
+	<name>DataWorks :: Sample Ember.js</name>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>maven2-repository.dev.java.net</id>
+			<name>Java.net Repository for Maven</name>
+			<url>http://download.java.net/maven/2/</url>
+			<layout>default</layout>
+		</pluginRepository>
+		<pluginRepository>
+			<id>maven2-repository.atlassian</id>
+			<name>Atlassian Maven Repository</name>
+			<url>https://maven.atlassian.com/repository/public</url>
+			<layout>default</layout>
+		</pluginRepository>
+	</pluginRepositories>
+	<repositories>
+		<repository>
+			<id>maven-repository</id>
+			<name>Repo1 Maven Release Repository</name>
+			<url>http://repo1.maven.org/maven2</url>
+		</repository>
+	</repositories>
+	<build>
+		<resources>
+			<resource>
+				<directory>public</directory>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.7</version>
+				<executions>
+					<execution>
+						<id>clean</id>
+						<phase>clean</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target name="hello-web-clean">
+								<exec dir="${basedir}" executable="rm" failonerror="false">
+									<arg value="-rf"/>
+									<arg value="public"/>
+								</exec>
+								<exec dir="${basedir}" executable="mkdir" failonerror="false">
+									<arg value="public"/>
+								</exec>
+							</target>
+						</configuration>
+					</execution>
+					<execution>
+						<id>compile</id>
+						<phase>compile</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target name="hello-web-compile">
+								<exec dir="${basedir}" executable="npm" failonerror="true">
+									<env key="PYTHON" value="python2.7"/>
+									<arg value="install"/>
+								</exec>
+								<exec dir="${basedir}" executable="brunch" failonerror="true">
+									<arg value="build" />
+								</exec>
+                <!--
+								<exec dir="${basedir}" executable="gzip" failonerror="true">
+									<arg value="public/js/app.js"/>
+									<arg value="public/js/vendor.js"/>
+									<arg value="public/css/app.css"/>
+									<arg value="public/css/vendor.css"/>
+								</exec>
+                -->
+							</target>
+						</configuration>
+					</execution>
+					<execution>
+						<id>test</id>
+						<phase>test</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target name="hello-web-test">
+								<!-- <exec dir="${basedir}" executable="brunch" failonerror="false"> -->
+								<!-- <arg value="test" /> -->
+								<!-- </exec> -->
+							</target>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
