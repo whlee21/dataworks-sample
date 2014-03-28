@@ -11,8 +11,8 @@ exports.config = {
   files: {
     javascripts: {
       joinTo: {
-        'javascripts/app.js': /^app/,
-        'javascripts/vendor.js': /^(vendor)/
+        'js/app.js': /^app/,
+        'js/vendor.js': /^(vendor)/
       },
       order: {
         before: [
@@ -27,7 +27,7 @@ exports.config = {
     },
     stylesheets: {
       joinTo: {
-        'stylesheets/app.css': /^(app|vendor)/
+        'css/app.css': /^(app|vendor)/
       },
       order: {
         before: []
@@ -37,7 +37,7 @@ exports.config = {
       precompile: true,
       root: 'templates',
       joinTo: {
-        'javascripts/app.js': /^app/
+        'js/app.js': /^app/
       }
     }
   },

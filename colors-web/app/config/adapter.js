@@ -2,6 +2,6 @@
 //	namespace: 'api/v1'
 //});
 //
-export default = App.Store = DS.Store.extend({
-	adapter:  DS.LSAdapter
-});
+//export default = App.ApplicationStore = DS.Store.extend({
+//	adapter:  DS.RESTAdapter
+//});
