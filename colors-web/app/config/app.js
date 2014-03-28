@@ -4,3 +4,4 @@ var config = {
 };
 
 export default = Ember.Application.create(config);
+
