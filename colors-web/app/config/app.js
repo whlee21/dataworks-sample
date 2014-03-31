@@ -4,4 +4,4 @@ var config = {
     LOG_ACTIVE_GENERATION: true
 };
 
-export default = Ember.Application.create(config);
+module.exports = Ember.Application.create(config);

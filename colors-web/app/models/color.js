@@ -1,3 +1,3 @@
-export default = App.Color = DS.Model.extend({
+module.exports = App.Color = DS.Model.extend({
     color: DS.attr('string'),
 });

@@ -1,8 +1,11 @@
+//import app from 'config/app';
 window.App = require('config/app');
 
-require('config/store');
+//import 'config/model';
+require('config/model')
 require('config/adapter');
 require('config/router');
+
 
 // Load all modules in order automagically. Ember likes things to work this
 // way so everything is in the App.* namespace.

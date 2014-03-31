@@ -14,7 +14,7 @@ module.exports = App.ColorsController = Ember.ArrayController.extend({
             });
             
             if (unique) {
-            	var newColor = this.store.createRecord('color');
+            	var newColor = App.Color.createRecord('color');
             	newColor.set('color', colorToAdd);
             	newColor.save();
 
@@ -25,9 +25,7 @@ module.exports = App.ColorsController = Ember.ArrayController.extend({
         },
         
         removeColor: function( color ) {
-// this.store.deleteRecord(color);
-// color.save();
-        	color.destroyRecord().then(function(){
+        	color.deleteRecord(color.get('id')).then(function(){
        			router.transitionTo('colors')
         	});
         },

@@ -1,5 +1,6 @@
 module.exports = App.ColorsRoute = Ember.Route.extend({
 	model : function() {
-		return this.store.find('color');
+		console.log('App.ColorsRoute.model.findAll')
+		return App.Color.findAll();
 	}
 });
