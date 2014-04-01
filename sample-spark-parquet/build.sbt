@@ -29,6 +29,6 @@ libraryDependencies ++= Seq(
     "org.apache.spark" % "spark-assembly_2.10" % "0.9.0-cdh5.0.0-beta-2",
     "org.apache.spark" % "spark-core_2.10" % "0.9.0-cdh5.0.0-beta-2" % "provided",
     "org.apache.hadoop" % "hadoop-client" % "2.2.0-cdh5.0.0-beta-2" % "provided",
-    "org.apache.avro" % "avro" % "1.7.5",
-    "com.twitter" % "parquet-avro" % "1.3.2"
+    "org.apache.avro" % "avro" % "1.7.5-cdh5.0.0-beta-2",
+    "com.twitter" % "parquet-avro" % "1.2.5-cdh5.0.0-beta-2"
 )
