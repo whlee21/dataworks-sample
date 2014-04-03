@@ -1,6 +1,6 @@
 {
   "author": "Matthew Marcum",
-  "name": "hello-ember-data",
+  "name": "colors-web-ajax",
   "version": "0.0.0",
   "description": "Brunch Skeleton for EmberJs with ES6 Modules",
   "scripts": {
@@ -8,7 +8,6 @@
   },
   "dependencies": {
     "ember-handlebars-brunch": "~1.2.0",
-    "es6-module-transpiler-brunch": "0.0.6",
     "jshint-brunch": "~1.7.0",
     "javascript-brunch": "~1.7.1",
     "less-brunch": "~1.7.1",

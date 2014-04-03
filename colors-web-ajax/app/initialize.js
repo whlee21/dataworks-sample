@@ -1,7 +1,5 @@
-//import app from 'config/app';
 window.App = require('config/app');
 
-//import 'config/model';
 require('config/model')
 require('config/adapter');
 require('config/router');

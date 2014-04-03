@@ -19,7 +19,8 @@ exports.config = {
           'vendor/js/jquery.js',
           'vendor/js/handlebars.js',
           'vendor/js/ember.js',
-          'vendor/js/bootstrap.js',
+          'vendor/js/ember-model.js',
+          'vendor/js/bootstrap.js'
           ]
       }
     },

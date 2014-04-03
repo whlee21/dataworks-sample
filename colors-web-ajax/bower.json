@@ -1,5 +1,5 @@
 {
-  "name": "hello-ember-data",
+  "name": "colors-web-ajax",
   "version": "0.0.0",
   "description": "Brunch skeleton for Ember with ES6 Modules",
   "authors": [
@@ -16,7 +16,7 @@
   "dependencies": {
     "bootstrap": "~3.1.1",
     "ember": "~1.4.0",
-    "ember-data": "~1.0.0",
+    "ember-model": "~0.0.11",
     "modernizr": "~2.7.1"
   },
   "overrides": {

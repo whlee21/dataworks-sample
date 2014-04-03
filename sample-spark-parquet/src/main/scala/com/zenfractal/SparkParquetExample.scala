@@ -49,11 +49,14 @@ object SparkParquetExample {
 
     // Configure the ParquetOutputFormat to use Avro as the serialization format
     ParquetOutputFormat.setWriteSupportClass(job, classOf[AvroWriteSupport])
+    
     // You need to pass the schema to AvroParquet when you are writing objects but not when you
     // are reading them. The schema is saved in Parquet file for future readers to use.
     AvroParquetOutputFormat.setSchema(job, AminoAcid.SCHEMA$)
+    
     // Create a PairRDD with all keys set to null and wrap each amino acid in serializable objects
     val rdd = sc.makeRDD(essentialAminoAcids.map(acid => (null, new SerializableAminoAcid(acid))))
+    
     // Save the RDD to a Parquet file in our temporary output directory
     rdd.saveAsNewAPIHadoopFile(outputDir, classOf[Void], classOf[AminoAcid],
       classOf[ParquetOutputFormat[AminoAcid]], job.getConfiguration)

@@ -1,27 +1,49 @@
-module.exports = App.Color = App.Model.extend();
+require('utils/get_json');
+require('utils/ajax');
 
-module.exports = App.Color.reopenClass({
-	collection: Ember.A(),
-	
-	log: function() {
-		console.log("log");
+module.exports = App.Color = Ember.Model.extend({
+	id : Ember.attr(),
+	color : Ember.attr(),
+
+});
+
+App.Color.url = '/colors';
+
+App.Color.adapter = App.Adapter.create({
+	findAll : function(klass, records) {
+		console.log('App.Color.findAll')
+		return this.findQuery(klass, records, {});
 	},
-	
-	find: function(id) {
-		console.log('App.Color.find: ' + id);
-		return App.Model.find(id, App.Color);
+	findQuery : function(klass, records, params) {
+		console.log('test')
+		return App.getJSON('/colors', {
+			type : "enterable",
+			include_fields : params.include_fields || "id, color"
+		}).then(function(json) {
+			var sortedColors = json.colors.sort(function(a, b) {
+				return Ember.compare(a.name, b.name);
+			});
+			records.load(klass, sortedColors);
+			return records;
+		});
 	},
-	
-	findAll: function() {
-		console.log('App.Color.findAll');
-		return App.Model.findAll('/colors', App.Color, 'colors');
-	},
-	
-	createRecord: function(model) {
-		App.Model.createRecord('/colors', App.Color, model);
-	},
-	
-	deleteRecord: function(id) {
-		App.Model.deleteRecord('/colors', App.Color, id);
+	createRecord: function(record) {
+		console.log('App.Color.createRecord');
+		var colorName = record.get('color');
+		var url = '/colors';
+		var data = {
+				color: colorName
+		};
+		
+		return App.ajax(url, {
+			type: 'POST',
+			dataType: 'json',
+			//contentType: 'application/json',
+			data: data,
+		}).then(function(data) {
+			record.load(data.id, record.get('_data'));
+			console.debug('then');
+			return record.reload();
+		});
 	}
 });
