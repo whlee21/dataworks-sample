@@ -1,7 +1,6 @@
-require('utils/get_json');
-require('utils/ajax');
+var App = require('app');
 
-module.exports = App.Color = Ember.Model.extend({
+App.Color = Ember.Model.extend({
 	id : Ember.attr(),
 	color : Ember.attr(),
 
@@ -10,40 +9,95 @@ module.exports = App.Color = Ember.Model.extend({
 App.Color.url = '/colors';
 
 App.Color.adapter = App.Adapter.create({
+	klass: null,
+	records: null,
+	params: null,
+	isAjaxSuccess: true,
+	
 	findAll : function(klass, records) {
-		console.log('App.Color.findAll')
+		console.debug('App.Color.findAll')
 		return this.findQuery(klass, records, {});
 	},
+
 	findQuery : function(klass, records, params) {
-		console.log('test')
-		return App.getJSON('/colors', {
-			type : "enterable",
-			include_fields : params.include_fields || "id, color"
-		}).then(function(json) {
-			var sortedColors = json.colors.sort(function(a, b) {
-				return Ember.compare(a.name, b.name);
-			});
-			records.load(klass, sortedColors);
-			return records;
+		console.debug('App.Color.findQuery');
+		this.records = records;
+		this.klass = klass;
+
+		App.ajax.send({
+			name : 'colors.list',
+			sender : this,
+			data: null,
+			success : 'findQuerySuccessCallback',
+			error : 'findQueryErrorCallback'
+		});
+		
+		return this.records;
+	},
+	
+	findQuerySuccessCallback: function(json) {
+		console.debug('findQuerySuccessCallback');
+		var colors = new Array();
+		console.debug(JSON.stringify(json));
+		json.colors.forEach(function (color) {
+			console.debug('color: ' + color.color);
+			
+		});
+		var sortedColors = json.colors.sort(function(a, b) {
+			return Ember.compare(a.name, b.name);
+		});
+		this.records.load(this.klass, sortedColors);
+	},
+	
+	findQueryErrorCallback: function() {
+		console.debug('findQueryErrorCallback');
+	},
+
+	createRecord : function(record) {
+		console.debug('App.Color.createRecord');
+		// var colorName = record.get('color');
+		var url = '/colors';
+		// var jsonData = {
+		// color: record.get('color')
+		// };
+		var newJson = record.toJSON();
+
+		console.debug('newJson: ' + newJson);
+
+		App.ajax.send({
+			name : 'colors.create',
+			sender : this,
+			data: { color: record.get('color') },
+			success : 'createRecordSuccessCallback',
+			error : 'createRecordErrorCallback'
 		});
 	},
-	createRecord: function(record) {
-		console.log('App.Color.createRecord');
-		var colorName = record.get('color');
-		var url = '/colors';
-		var data = {
-				color: colorName
-		};
-		
-		return App.ajax(url, {
-			type: 'POST',
-			dataType: 'json',
-			//contentType: 'application/json',
-			data: data,
-		}).then(function(data) {
-			record.load(data.id, record.get('_data'));
-			console.debug('then');
-			return record.reload();
+	
+	createRecordSuccessCallback: function(data) {
+	},
+	
+	createRecordErrorCallback: function() {
+	},
+	
+	deleteRecord : function(record) {
+		console.debug('App.Color.deleteRecord');
+
+		App.ajax.send({
+			name : 'colors.delete',
+			sender : this,
+			data: { color: record.get('color') },
+			success : 'deleteRecordSuccessCallback',
+			error : 'deleteRecordErrorCallback'
 		});
-	}
+
+		return record.reload();
+	},
+	
+	deleteRecordSuccessCallback: function(data) {
+		console.debug('deleteRecordSuccessCallback');
+	},
+	
+	deleteRecordErrorCallback: function() {
+		console.debug('deleteRecordErrorCallback');
+	},
 });

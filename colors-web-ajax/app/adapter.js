@@ -6,12 +6,14 @@
 //	adapter: App.RESTAdapter
 //});
 
-module.exports = App.Adapter = Ember.RESTAdapter.extend({
+var App = require('app');
+
+App.Adapter = Ember.RESTAdapter.extend({
 	ajaxSettings: function(url, method) {
 		return {
 			url: url,
 			type: method,
-			dataType: "json"
+			dataType: 'json'
 		}
 	}
 });

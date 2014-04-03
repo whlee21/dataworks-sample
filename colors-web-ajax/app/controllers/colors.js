@@ -1,4 +1,6 @@
-module.exports = App.ColorsController = Ember.ArrayController.extend({
+var App = require('app');
+
+App.ColorsController = Ember.ArrayController.extend({
 	colorToAdd: null,
     
     actions: {
@@ -28,7 +30,7 @@ module.exports = App.ColorsController = Ember.ArrayController.extend({
         
         removeColor: function( color ) {
         	color.deleteRecord(color.get('id')).then(function(){
-       			router.transitionTo('colors');
+       			router.transitionTo('/');
         	});
         },
    }

@@ -49,4 +49,11 @@ object Colors extends Controller {
         BadRequest("Color not found")
     }
   }
+  
+  def delete() = Action(parse.json) { request =>
+    val colorJson = request.body
+    Logger.debug("delete\n" + Json.prettyPrint(colorJson))
+
+    Ok("Deleted")
+  }
 }
