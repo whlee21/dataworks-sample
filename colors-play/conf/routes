@@ -3,10 +3,10 @@
 # ~~~~
 
 # Home page
-GET   	/                      	 	controllers.Assets.at(path="/public", file="index.html")
-GET		/api/v1/colors				controllers.Colors.list
-POST	/api/v1/colors				controllers.Colors.save
-DELETE	/api/v1/colors				controllers.Colors.delete
+GET   	/                      	controllers.Assets.at(path="/public", file="index.html")
+GET			/api/v1/colors					controllers.Colors.list
+POST		/api/v1/colors					controllers.Colors.create
+DELETE	/api/v1/colors					controllers.Colors.delete
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /*file               		controllers.Assets.at(path="/public", file)

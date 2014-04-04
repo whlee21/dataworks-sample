@@ -5,31 +5,37 @@ var urls = {
 		'real' : '/colors',
 		'mock' : '/data/colors.json'
 	},
-	
+
 	'colors.create' : {
 		'real' : '/colors',
-		'mock' : '/data/colors.json',
+		'mock' : '/data/colors_create.json',
 		'format' : function(color) {
 			return {
 				type : 'POST',
 				async : false,
+				contentType : 'application/json',
 				data : JSON.stringify({
-					"color" : color.color
+					"color" : {
+						color : color.color
+					}
 				})
 			}
 		}
 	},
-	
+
 	'colors.delete' : {
 		'real' : '/colors',
-		'mock' : '/data/colors.json',
+		'mock' : '/data/colors_delete.json',
 		'format' : function(color) {
 			return {
 				type : 'DELETE',
 				async : false,
+				contentType : 'application/json',
 				data : JSON.stringify({
-					id: color.id,
-					color: color.color
+					"color" : {
+						id : color.id,
+						color : color.color
+					}
 				})
 			}
 		}
@@ -79,6 +85,7 @@ var formatRequest = function(data) {
 	if (this.format) {
 		jQuery.extend(opt, this.format(data, opt));
 	}
+
 	return opt;
 };
 
@@ -129,8 +136,6 @@ var ajax = Ember.Object.extend({
 			return null;
 		}
 
-		console.debug('opt.url: ' + opt.url);
-
 		opt = formatRequest.call(urls[config.name], params);
 
 		opt.context = this;
@@ -150,6 +155,7 @@ var ajax = Ember.Object.extend({
 		};
 		opt.error = function(request, ajaxOptions, error) {
 			if (config.error) {
+				console.error('TRACE: ajax error: ' + error);
 				config.sender[config.error](request, ajaxOptions, error, opt);
 			} else {
 				this.defaultErrorHandler(request, opt.url, opt.type);
@@ -161,12 +167,9 @@ var ajax = Ember.Object.extend({
 			}
 		};
 
-		console.debug('opt.url: ' + opt.url);
-
 		if ($.mocho) {
 			opt.url = 'http://' + $.hostName + opt.url;
 		}
-		console.debug('opt.url: ' + opt.url);
 		return $.ajax(opt);
 	},
 

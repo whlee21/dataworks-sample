@@ -1,7 +1,5 @@
 package models
 
-import play.api.libs.json.Writes
-import play.api.libs.json.Json
 import play.api.Logger
 
 case class Color(id: Long, color: String)
@@ -20,8 +18,18 @@ object Color {
   }
 
   def save(color: String) = {
-    Logger.debug(color)
-    this.colors += Color(newId, color)
+    Logger.debug("save: " + color)
+    
+    val newColor = Color(newId, color)
+    this.colors += newColor
+    
     Logger.debug(this.colors.toString)
+    
+    newColor
+  }
+  
+  def delete(color: Color) {
+    Logger.debug("id = " + color.id + ", color = " + color.color )
+    this.colors -= color;
   }
 }

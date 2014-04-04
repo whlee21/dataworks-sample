@@ -9,11 +9,11 @@
 var App = require('app');
 
 App.Adapter = Ember.RESTAdapter.extend({
-	ajaxSettings: function(url, method) {
-		return {
-			url: url,
-			type: method,
-			dataType: 'json'
-		}
-	}
+//	ajaxSettings: function(url, method) {
+//		return {
+//			url: url,
+//			type: method,
+//			dataType: 'json'
+//		}
+//	}
 });

@@ -6,13 +6,13 @@ App.Color = Ember.Model.extend({
 
 });
 
-App.Color.url = '/colors';
+App.Color.url = App.apiPrefix + "/colors";
 
 App.Color.adapter = App.Adapter.create({
 	klass: null,
 	records: null,
 	params: null,
-	isAjaxSuccess: true,
+	record: null,
 	
 	findAll : function(klass, records) {
 		console.debug('App.Color.findAll')
@@ -55,11 +55,9 @@ App.Color.adapter = App.Adapter.create({
 
 	createRecord : function(record) {
 		console.debug('App.Color.createRecord');
-		// var colorName = record.get('color');
-		var url = '/colors';
-		// var jsonData = {
-		// color: record.get('color')
-		// };
+		
+		this.record = record;
+
 		var newJson = record.toJSON();
 
 		console.debug('newJson: ' + newJson);
@@ -74,27 +72,35 @@ App.Color.adapter = App.Adapter.create({
 	},
 	
 	createRecordSuccessCallback: function(data) {
+		console.debug('createRecordSuccessCallback id = ' + data.id);
+		this.record.set('id', data.id);
+		this.record.didCreateRecord();
 	},
 	
 	createRecordErrorCallback: function() {
+		console.debug('createRecordErrorCallback');
 	},
 	
 	deleteRecord : function(record) {
 		console.debug('App.Color.deleteRecord');
-
+		
+		this.record = record;
+		
 		App.ajax.send({
 			name : 'colors.delete',
 			sender : this,
-			data: { color: record.get('color') },
+			data : {
+				id: record.get('id'),
+				color : record.get('color')
+			},
 			success : 'deleteRecordSuccessCallback',
 			error : 'deleteRecordErrorCallback'
 		});
-
-		return record.reload();
 	},
 	
 	deleteRecordSuccessCallback: function(data) {
 		console.debug('deleteRecordSuccessCallback');
+		this.record.didDeleteRecord();
 	},
 	
 	deleteRecordErrorCallback: function() {

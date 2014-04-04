@@ -18,7 +18,7 @@ App.ColorsController = Ember.ArrayController.extend({
             });
             
             if (unique) {
-            	var newColor = new App.Color();
+            	var newColor = App.Color.create();
             	newColor.set('color', colorToAdd);
             	newColor.save();
 
@@ -29,9 +29,11 @@ App.ColorsController = Ember.ArrayController.extend({
         },
         
         removeColor: function( color ) {
-        	color.deleteRecord(color.get('id')).then(function(){
-       			router.transitionTo('/');
-        	});
+        	color.deleteRecord(color.get('id'));
+//        	color.deleteRecord(color.get('id')).then(function(){
+////       			App.ColorsRoute.transitionTo('/');
+//        		App.router.transitionTo('colors');
+//        	});
         },
    }
 });
