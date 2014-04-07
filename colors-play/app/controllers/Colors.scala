@@ -67,7 +67,7 @@ object Colors extends Controller {
       val colorJson = request.body
       Logger.debug("delete\n" + Json.prettyPrint(colorJson))
 
-      var color = colorJson.as[Color]
+      val color = colorJson.as[Color]
       
       Logger.debug("color: " + color)
       Color.delete(color)
