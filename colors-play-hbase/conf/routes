@@ -1,0 +1,12 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET   	/                      	controllers.Assets.at(path="/public", file="index.html")
+GET			/api/v1/colors					controllers.Colors.list
+POST		/api/v1/colors					controllers.Colors.create
+DELETE	/api/v1/colors					controllers.Colors.delete
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /*file               		controllers.Assets.at(path="/public", file)

@@ -15,9 +15,9 @@ object Resolvers {
 }
 
 object Dependencies {
-  val sparkAssembly = "org.apache.spark" % "spark-assembly_2.10" % "0.9.0-cdh5.0.0-beta-2"
-  val sparkCore = "org.apache.spark" % "spark-core_2.10" % "0.9.0-cdh5.0.0-beta-2" % "provided"
-  val hadoopClient = "org.apache.hadoop" % "hadoop-client" % "2.2.0-cdh5.0.0-beta-2" % "provided"
+  val sparkAssembly = "org.apache.spark" % "spark-assembly_2.10" % "0.9.0-cdh5.0.0"
+  val sparkCore = "org.apache.spark" % "spark-core_2.10" % "0.9.0-cdh5.0.0" % "provided"
+  val hadoopClient = "org.apache.hadoop" % "hadoop-client" % "2.3.0-cdh5.0.0" % "provided"
 }
 
 object Builds extends Build {
@@ -29,7 +29,7 @@ object Builds extends Build {
   val excludeNetty = ExclusionRule(organization = "org.jboss.netty")
   val excludeAsm = ExclusionRule(organization = "asm")
   val excludeSnappy = ExclusionRule(organization = "org.xerial.snappy")
-  val HBASE_VERSION = "0.96.1.1-cdh5.0.0-beta-2"
+  val HBASE_VERSION = "0.96.1.1-cdh5.0.0"
 
   val appDeps = Seq (
     sparkAssembly,
@@ -40,7 +40,7 @@ object Builds extends Build {
   lazy val buildSettings = Defaults.defaultSettings ++ Seq(
     version := "0.1-SNAPSHOT",
     organization := "com.nablecomm",
-    scalaVersion := "2.10.3"
+    scalaVersion := "2.10.4"
   )
 
   lazy val rootSettings = buildSettings ++ Seq(
@@ -74,8 +74,8 @@ object Builds extends Build {
         "aopalliance-1.0.jar",
         "asm-commons-4.0.jar",
         "asm-tree-4.0.jar",
-        "avro-1.7.5-cdh5.0.0-beta-2.jar",
-        "avro-ipc-1.7.5-cdh5.0.0-beta-2.jar",
+        "avro-1.7.5-cdh5.0.0.jar",
+        "avro-ipc-1.7.5-cdh5.0.0.jar",
         "chill-java-0.3.1.jar",
         "chill_2.10-0.3.1.jar",
         "colt-1.2.0.jar",
@@ -91,14 +91,14 @@ object Builds extends Build {
         "concurrent-1.3.4.jar",
         "gmetric4j-1.0.3.jar",
         "guice-3.0.jar",
-        "hadoop-annotations-2.2.0-cdh5.0.0-beta-2.jar",
-        "hadoop-mapreduce-client-jobclient-2.2.0-cdh5.0.0-beta-2.jar",
-        "hadoop-mapreduce-client-shuffle-2.2.0-cdh5.0.0-beta-2.jar",
-        "hadoop-yarn-api-2.2.0-cdh5.0.0-beta-2.jar",
-        "hadoop-yarn-client-2.2.0-cdh5.0.0-beta-2.jar",
-        "hadoop-yarn-common-2.2.0-cdh5.0.0-beta-2.jar",
-        "hadoop-yarn-server-common-2.2.0-cdh5.0.0-beta-2.jar",
-        "hadoop-yarn-server-nodemanager-2.2.0-cdh5.0.0-beta-2.jar",
+        "hadoop-annotations-2.3.0-cdh5.0.0.jar",
+        "hadoop-mapreduce-client-jobclient-2.3.0-cdh5.0.0.jar",
+        "hadoop-mapreduce-client-shuffle-2.3.0-cdh5.0.0.jar",
+        "hadoop-yarn-api-2.3.0-cdh5.0.0.jar",
+        "hadoop-yarn-client-2.3.0-cdh5.0.0.jar",
+        "hadoop-yarn-common-2.3.0-cdh5.0.0.jar",
+        "hadoop-yarn-server-common-2.3.0-cdh5.0.0.jar",
+        "hadoop-yarn-server-nodemanager-2.3.0-cdh5.0.0.jar",
         "httpclient-4.2.5.jar",
         "httpcore-4.2.5.jar",
         "jackson-core-asl-1.8.8.jar",
@@ -140,10 +140,10 @@ object Builds extends Build {
         "reflectasm-1.07-shaded.jar",
         "servlet-api-2.5-20081211.jar",
         "snappy-java-1.0.5.jar",
-        "spark-bagel_2.10-0.9.0-cdh5.0.0-beta-2.jar",
-        "spark-mllib_2.10-0.9.0-cdh5.0.0-beta-2.jar",
-        "spark-repl_2.10-0.9.0-cdh5.0.0-beta-2.jar",
-        "spark-streaming_2.10-0.9.0-cdh5.0.0-beta-2.jar",
+        "spark-bagel_2.10-0.9.0-cdh5.0.0.jar",
+        "spark-mllib_2.10-0.9.0-cdh5.0.0.jar",
+        "spark-repl_2.10-0.9.0-cdh5.0.0.jar",
+        "spark-streaming_2.10-0.9.0-cdh5.0.0.jar",
         "stax-api-1.0-2.jar",
         "uncommons-maths-1.2.2a.jar",
         "velocity-1.7.jar",
@@ -152,9 +152,9 @@ object Builds extends Build {
         "zookeeper-3.4.5.jar"
         //"asm-4.0.jar",
         //"commons-cli-1.2.jar",
-        //"hadoop-mapreduce-client-app-2.2.0-cdh5.0.0-beta-2.jar",
-        //"hadoop-mapreduce-client-common-2.2.0-cdh5.0.0-beta-2.jar",
-        //"hadoop-mapreduce-client-core-2.2.0-cdh5.0.0-beta-2.jar",
+        //"hadoop-mapreduce-client-app-2.3.0-cdh5.0.0.jar",
+        //"hadoop-mapreduce-client-common-2.3.0-cdh5.0.0.jar",
+        //"hadoop-mapreduce-client-core-2.3.0-cdh5.0.0.jar",
         //"jetty-continuation-7.6.8.v20121106.jar",
         //"mesos-0.13.0.jar",
         //"protobuf-java-2.5.0.jar",
@@ -170,10 +170,10 @@ object Builds extends Build {
         //"config-1.0.2.jar",
         //"fastutil-6.4.4.jar",
         //"guava-14.0.1.jar",
-        //"hadoop-auth-2.2.0-cdh5.0.0-beta-2.jar",
-        //"hadoop-client-2.2.0-cdh5.0.0-beta-2.jar",
-        //"hadoop-common-2.2.0-cdh5.0.0-beta-2.jar",
-        //"hadoop-hdfs-2.2.0-cdh5.0.0-beta-2.jar",
+        //"hadoop-auth-2.3.0-cdh5.0.0.jar",
+        //"hadoop-client-2.3.0-cdh5.0.0.jar",
+        //"hadoop-common-2.3.0-cdh5.0.0.jar",
+        //"hadoop-hdfs-2.3.0-cdh5.0.0.jar",
         //"jackson-annotations-2.2.2.jar",
         //"jackson-core-2.2.2.jar",
         //"jackson-databind-2.2.2.jar",
@@ -192,8 +192,8 @@ object Builds extends Build {
         //"servlet-api-2.5.jar"
         //"slf4j-api-1.7.2.jar",
         //"slf4j-log4j12-1.7.2.jar",
-        //"spark-assembly_2.10-0.9.0-cdh5.0.0-beta-2.jar",
-        //"spark-core_2.10-0.9.0-cdh5.0.0-beta-2.jar",
+        //"spark-assembly_2.10-0.9.0-cdh5.0.0.jar",
+        //"spark-core_2.10-0.9.0-cdh5.0.0.jar",
       )
       cp filter { jar => excludes(jar.data.getName) }
     }
