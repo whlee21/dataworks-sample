@@ -39,6 +39,12 @@ App.Color.adapter = App.Adapter.create({
 		console.debug('findQuerySuccessCallback');
 		var colors = new Array();
 		console.debug(JSON.stringify(json));
+//		if (json.colors == null) {
+////			App.showAlertPopup('title', 'body');
+//			alert('No colors...');
+//			this.records = Ember.RecordArray.create({});
+//		    return;
+//		}
 		json.colors.forEach(function (color) {
 			console.debug('color: ' + color.color);
 			
