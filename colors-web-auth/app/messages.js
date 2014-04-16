@@ -57,11 +57,11 @@ Em.I18n.translations = {
   
   'color.findquery.error':'findQuery failed',
 
-
-  'login.header':'Sign in',
+  'login.header':'Please sign in',
   'login.username':'Username',
   'login.loginButton':'Sign in',
   'login.error':'Invalid username/password combination.',
+  'login.remember':'Remember me',
 
   'utils.ajax.errorMessage': 'Error message'
 };

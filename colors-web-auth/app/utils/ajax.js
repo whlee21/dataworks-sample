@@ -40,13 +40,49 @@ var urls = {
 			}
 		}
 	},
+	
+
+	'router.authentication' : {
+		'real' : '/colors',
+		'mock' : '/data/colors.json',
+		'format' : function() {
+			return {
+				async : false
+			};
+		}
+	},
+		  
+	'router.login' : {
+		'real' : '/users/{loginName}',
+		'mock' : '/data/users/user_{usr}.json',
+		'format' : function(data) {
+			var statusCode = jQuery.extend({}, require('data/statusCodes'));
+			statusCode['403'] = function() {
+				console.log("Error code 403: Forbidden.");
+			};
+			return {
+				statusCode : statusCode
+			};
+		}
+	},
+	
+	'router.login2' : {
+		'real' : '/colors',
+		'mock' : '/data/colors.json'
+	},
+	'router.logoff' : {
+		'real' : '/logout',
+		'mock' : ''
+	},
 };
 
 /**
  * Replace data-placeholders to its values
- *
- * @param {String} url
- * @param {Object} data
+ * 
+ * @param {String}
+ *            url
+ * @param {Object}
+ *            data
  * @return {String}
  */
 var formatUrl = function (url, data) {

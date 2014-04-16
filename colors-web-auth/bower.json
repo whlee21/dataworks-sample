@@ -17,7 +17,8 @@
     "bootstrap": "~3.1.1",
     "ember": "~1.5.0",
     "ember-model": "~0.0.11",
-    "modernizr": "~2.7.1"
+    "modernizr": "~2.7.1",
+    "ember-simple-auth": "https://github.com/simplabs/ember-simple-auth-component.git"
   },
   "overrides": {
     "modernizr": {

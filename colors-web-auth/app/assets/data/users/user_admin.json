@@ -1,0 +1,9 @@
+{
+  "Users" : {
+    "user_name" : "admin",
+    "roles" : [
+      "admin",
+      "user"
+    ]
+  }
+}

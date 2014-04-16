@@ -20,11 +20,13 @@ import security.MyDeadboltHandler
 
 object Colors extends Controller with DeadboltActions {
 
+  // json serializer
   implicit val colorWrites: Writes[Color] = (
     (JsPath \ "id").write[Long] and
     (JsPath \ "color").write[String]
   )(unlift(Color.unapply))
   
+  // json deserializer
   implicit val colorReads: Reads[Color] = (
     (JsPath \ "color" \ "id").read[Long] and
     (JsPath \ "color" \ "color").read[String]

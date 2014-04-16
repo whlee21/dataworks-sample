@@ -20,6 +20,8 @@ exports.config = {
           'vendor/js/handlebars.js',
           'vendor/js/ember.js',
           'vendor/js/ember-model.js',
+          'vendor/js/ember-simple-auth.js',
+          'vendor/js/ember-simple-auth-oauth2.js',
           'vendor/js/plurals.js',
           'vendor/js/i18n.js',
           'vendor/js/bootstrap.js'
