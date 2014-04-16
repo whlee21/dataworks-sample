@@ -9,38 +9,99 @@ var config = {
 
 
 var ColorsAuthenticator = Ember.SimpleAuth.Authenticators.Base.extend({
+	
+	tokenEndpoint: '/api/v1/session',
+
+	restore : function(data) {
+		return new Ember.RSVP.Promise(function(resolve, reject) {
+			if (!Ember.isEmpty(data.token)) {
+				resolve(data);
+			} else {
+				reject();
+			}
+		});
+	},
+
 	authenticate : function(credentials) {
-		console.debug('ColorsAuthenticator.authenticate()');
+		var _this = this;
+
+		var loginName = credentials.identification.toLowerCase();
+		var hash = window.btoa(loginName + ":" + credentials.password);
+		var usr = '';
+
+		if (App.testMode) {
+			if (loginName === "admin"
+					&& credentials.password === 'admin') {
+				usr = 'admin';
+			} else if (loginName === 'user'
+					&& credentials.password === 'user') {
+				usr = 'user';
+			}
+		}
+
 		return new Ember.RSVP.Promise(function(resolve, reject) {
 			App.ajax.send({
-				name : 'router.authentication',
-				sender : this,
-				success : 'onAuthenticationSuccess',
-				error : 'onAuthenticationError'
+				name : 'router.login',
+				sender : _this,
+				data : {
+					auth : "Basic " + hash,
+					usr : usr,
+					loginName : loginName
+				},
+				beforeSend : 'authBeforeSend',
+				success : 'loginSuccessCallback',
+				error : 'loginErrorCallback'
 			});
 		});
 	},
 
-	onAuthenticationSuccess : function(data) {
-//		this.set('loggedIn', true);
-		console.debug('ColorsAuthenticator.onAuthenticationSuccess');
+	authBeforeSend : function(opt, xhr, data) {
+		xhr.setRequestHeader("Authorization", data.auth);
 	},
-	
-	onAuthenticationError : function(data) {
-		console.debug('ColorsAuthenticator.onAuthenticationError');
-		if (data.status === 403) {
-//			this.set('loggedIn', false);
-			console.debug('statusCode = 403');
-		} else {
-			console.log('error in ColorsAuthenticator');
-		}
-	}
+       
+
+	loginSuccessCallback : function(data, opt, params) {
+		console.debug('loginSuccessCallback');
+		Ember.run(function() {
+			resolve({
+				// FIXME:
+				token : response.session.token
+			});
+		});
+	},
+      
+
+	loginErrorCallback : function(request, ajaxOptions, error, opt) {
+		console.debug('loginFailCallback');
+		var response = JSON.parse(xhr.responseText);
+		Ember.run(function() {
+			// FIXME:
+			reject(response.error);
+		});
+	},
+      
+	invalidate : function() {
+		var _this = this;
+		return new Ember.RSVP.Promise(function(resolve) {
+			Ember.$.ajax({
+				url : _this.tokenEndpoint,
+				type : 'DELETE'
+			}).always(function() {
+				resolve();
+			})
+		});
+	},
+
 });
 
 var ColorsAuthorizer =  Ember.SimpleAuth.Authorizers.Base.extend({
 	authorize: function(jqXHR, requestOptions) {
 		console.debug('ColorsAuthorizer.authorize()');
-		return null;
+		return function(jqXHR, requestOptions) {
+			if (this.get('session.isAuthenticated') && !Ember.isEmpty(this.get('session.token'))) {
+				jqXHR.setRequestHeader('Authorization', 'Token: ' + this.get('session.token'));
+			}
+		}
 	}
 });
 

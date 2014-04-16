@@ -4,6 +4,7 @@ require('config');
 require('messages');
 require('utils/ajax');
 require('adapter');
+require('router')
 
 // Load all modules in order automagically. Ember likes things to work this
 // way so everything is in the App.* namespace.
@@ -20,5 +21,3 @@ folderOrder.forEach(function(folder) {
     require(module);
   });
 });
-
-require('router')

@@ -183,7 +183,10 @@ var ajax = Em.Object.extend({
 
     // object sender should be provided for processing beforeSend, success and error responses
     opt.beforeSend = function (xhr) {
+    	
+   	  console.debug('whlee21 beforeSend : ' + config.beforeSend);
       if (config.beforeSend) {
+    	console.debug('whlee21 sender : ' + config.sender);
         config.sender[config.beforeSend](opt, xhr, params);
       }
     };
