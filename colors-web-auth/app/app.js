@@ -11,7 +11,16 @@ var config = {
 Ember.Application.initializer({
   name: 'authentication',
   initialize: function(container, application) {
-//	  Ember.SimpleAuth.setup(container, application);
+
+	Ember.SimpleAuth.Session.reopen({
+		account: function() {
+			var accountId = this.get('account_id');
+			if (!Ember.isEmpty(account_id)) {
+				return container.lookup('store:main').find('account', accountId);
+			}
+		}
+	});
+	  
 	container.register('authenticator:colors', App.ColorsAuthenticator);
 	container.register('authorizer:colors', App.ColorsAuthorizer);
 	Ember.SimpleAuth.setup(container, application, App.SimpleAuthOptions);

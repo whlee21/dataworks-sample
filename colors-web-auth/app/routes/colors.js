@@ -1,6 +1,10 @@
 var App = require('app');
 
 App.ColorsRoute = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
+//	beforeModel: function(transition) {
+//		
+//	},
+	
 	model : function() {
 		console.debug('App.ColorsRoute.model.findAll')
 		

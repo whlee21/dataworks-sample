@@ -9,36 +9,37 @@ App.LoginRoute = Ember.Route.extend({
 
 	actions : {
 		authenticateSession: function() {
-			console.debug('authenticateSession');
+			console.debug('LoginRoute.authenticateSession');
 			this.get('session').authenticate('authenticator:colors', {});
 		},
 		
 		// transition to 'colors' when authentication succeeds
 		sessionAuthenticationSucceeded: function() {
-			console.debug('sessionAuthenticationSucceeded');
+			console.debug('LoginRoute.sessionAuthenticationSucceeded');
+			console.debug('session.account');
 			this.transitionTo('colors');
 		},
 		
 		// display an error when authentication fails
 		sessionAuthenticationFailed : function(error) {
-			console.debug('sessionAuthenticationFailed');
+			console.debug('LoginRoute.sessionAuthenticationFailed');
 			this.controller.set('errorMessage', error);
 		},
 		
 		invalidateSession: function() {
-			console.debug('invalidateSession');
+			console.debug('LoginRoute.invalidateSession');
 		},
 		
 		sessionInvalidationSucceeded: function() {
-			console.debug('sessionInvalidationSucceeded');
+			console.debug('LoginRoute.sessionInvalidationSucceeded');
 		},
 		
 		sessionInvalidationFailed: function(error) {
-			console.debug('sessionInvalidationFailed');
+			console.debug('LoginRoute.sessionInvalidationFailed');
 		},
 		
 		authorizationFailed: function() {
-			console.debug('authorizationFailed');
+			console.debug('LoginRoute.authorizationFailed');
 		}
 	}
 });

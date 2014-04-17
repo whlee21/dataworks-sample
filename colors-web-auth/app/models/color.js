@@ -3,7 +3,6 @@ var App = require('app');
 App.Color = Ember.Model.extend({
 	id : Ember.attr(),
 	color : Ember.attr(),
-
 });
 
 App.Color.url = App.apiPrefix + "/colors";

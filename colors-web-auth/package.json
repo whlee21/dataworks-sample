@@ -1,6 +1,6 @@
 {
   "author": "Matthew Marcum",
-  "name": "colors-web-ajax",
+  "name": "colors-web-auth",
   "version": "0.0.0",
   "description": "Brunch Skeleton for EmberJs with ES6 Modules",
   "scripts": {

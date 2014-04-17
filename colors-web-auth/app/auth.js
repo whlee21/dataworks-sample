@@ -60,22 +60,20 @@ App.ColorsAuthenticator = Ember.SimpleAuth.Authenticators.Base.extend({
 		console.debug('data: ' + util.inspect(data));
 		console.debug('opt: ' + util.inspect(opt));
 		console.debug('params: ' + util.inspect(params));
-		console.debug(util.inspect(App.Router));
-		App.router.setLoginName(params.loginName);
-		console.log('getLoginName: ' + App.router.getLoginName());
 		Ember.run(function() {
-//			var users = data['Users'];
-//			var username = users.user_name;
+			var users = data['Users'];
+			var username = users.user_name;
+			console.debug('user_name: ' + username);
 //			users.roles.forEach(function(role) {
 //				console.debug('role: ' + role)
 //			});
 			_this.resolve({
 				// FIXME:
 //				token : response.session.token
-				token: data
+				account_id: username
 			});
 		});
-	},    
+	},
 
 	loginErrorCallback : function(request, ajaxOptions, error, opt) {
 		console.debug('loginFailCallback');
