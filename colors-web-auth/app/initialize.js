@@ -2,8 +2,11 @@ window.App = require('app');
 
 require('config');
 require('messages');
+console.log('import utils/db');
+require('utils/db');
 require('utils/ajax');
 require('adapter');
+require('auth')
 require('router')
 
 // Load all modules in order automagically. Ember likes things to work this

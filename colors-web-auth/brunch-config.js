@@ -23,6 +23,7 @@ exports.config = {
           'vendor/js/ember-simple-auth.js',
           'vendor/js/ember-simple-auth-oauth2.js',
           'vendor/js/plurals.js',
+          'vendor/js/util.js',
           'vendor/js/i18n.js',
           'vendor/js/bootstrap.js'
           ]

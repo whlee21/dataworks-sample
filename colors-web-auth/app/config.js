@@ -2,6 +2,7 @@ var App = require('app');
 
 App.testMode = (location.port == '3333'); // test mode is automatically enabled if running on brunch server
 App.apiPrefix = '/api/v1';
+App.timeout = 180000; // default AJAX timeout
 
 // this is to make sure that IE does not cache data when making AJAX calls to the server
 if (!$.mocho) {

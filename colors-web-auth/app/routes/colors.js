@@ -1,10 +1,11 @@
 var App = require('app');
 
-App.ColorsRoute = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin);
-
-App.ColorsRoute.reopen({
+App.ColorsRoute = Ember.Route.extend(Ember.SimpleAuth.AuthenticatedRouteMixin, {
 	model : function() {
 		console.debug('App.ColorsRoute.model.findAll')
-		return App.Color.findAll();
-	}
+		
+		return new Ember.RSVP.Promise(function(resolve, reject) {
+			resolve(App.Color.findAll());			
+		});
+	}	
 });
