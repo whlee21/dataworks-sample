@@ -8,5 +8,7 @@ GET		/api/v1/colors			controllers.Colors.list
 POST	/api/v1/colors			controllers.Colors.insert
 DELETE	/api/v1/colors			controllers.Colors.delete
 
+GET		/api/v1/users/:id		controllers.Users.login(id: String)
+
 # Map static resources from the /public folder to the /assets URL path
-GET     /*file               		controllers.Assets.at(path="/public", file)
+GET     /*file               	controllers.Assets.at(path="/public", file)

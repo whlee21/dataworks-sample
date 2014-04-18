@@ -74,7 +74,7 @@ object Colors extends Controller with DeadboltActions {
     }
   }
 
-  def delete = Restrict(Array("foo"), new MyDeadboltHandler) {
+  def delete = Restrict(Array("admin"), new MyDeadboltHandler) {
     DBAction(parse.json) { implicit rs =>
       try {
         val colorJson = rs.request.body

@@ -9,6 +9,8 @@ import play.api.mvc.Result
 import play.api.mvc.Results
 import scala.concurrent.Future
 import play.api.mvc.SimpleResult
+import play.api.mvc.RequestHeader
+import play.api.mvc.Security
 
 class MyDeadboltHandler(dynamicResourceHandler: Option[DynamicResourceHandler] = None) extends DeadboltHandler {
 
@@ -19,9 +21,14 @@ class MyDeadboltHandler(dynamicResourceHandler: Option[DynamicResourceHandler] =
     else Some(new MyDynamicResourceHandler())
   }
 
+  private def username(request: RequestHeader) = request.session.get(Security.username)
+  
   override def getSubject[A](request: Request[A]): Option[Subject] = {
-    // e.g. request.session.get("user")
-    Some(new User("steve"))
+    val session = username(request)
+    session match {
+      case Some(session) => Some(new User(username(request).get))
+      case None => None
+    }
   }
 
   def onAuthFailure[A](request: Request[A]): Future[SimpleResult] = {
