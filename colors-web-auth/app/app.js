@@ -13,12 +13,19 @@ Ember.Application.initializer({
   initialize: function(container, application) {
 
 	Ember.SimpleAuth.Session.reopen({
-		account: function() {
-			var accountId = this.get('account_id');
-			if (!Ember.isEmpty(account_id)) {
-				return container.lookup('store:main').find('account', accountId);
+		userid: function() {
+			var userId = this.get('user_id');
+			if (!Ember.isEmpty(userId)) {
+				return container.lookup('store:main').find('userid', userId);
 			}
-		}
+		}.property('userId'),
+
+		roles: function() {
+			var userRoles = this.get('user_roles');
+			if (!Ember.isEmpty(userRoles)) {
+				return container.lookup('store:main').find('roles', userRoles);
+			}
+		}.property('userRoles')
 	});
 	  
 	container.register('authenticator:colors', App.ColorsAuthenticator);

@@ -2,10 +2,10 @@ var App = require('app');
 
 App.ColorsAuthenticator = Ember.SimpleAuth.Authenticators.Base.extend({
 
-	tokenEndpoint: App.apiPrefix + '/user',
-
 	resolve: null,
 	reject: null,
+	
+	hash: null,
 
 	restore : function(data) {
 		return new Ember.RSVP.Promise(function(resolve, reject) {
@@ -21,7 +21,7 @@ App.ColorsAuthenticator = Ember.SimpleAuth.Authenticators.Base.extend({
 		var _this = this;
 
 		var loginName = credentials.identification.toLowerCase();
-		var hash = window.btoa(loginName + ":" + credentials.password);
+		this.hash = window.btoa(loginName + ":" + credentials.password);
 		var usr = '';
 
 		if (App.testMode) {
@@ -39,7 +39,7 @@ App.ColorsAuthenticator = Ember.SimpleAuth.Authenticators.Base.extend({
 				name : 'router.login',
 				sender : _this,
 				data : {
-					auth : "Basic " + hash,
+					auth : "Basic " + _this.hash,
 					usr : usr,
 					loginName : loginName
 				},
@@ -62,15 +62,14 @@ App.ColorsAuthenticator = Ember.SimpleAuth.Authenticators.Base.extend({
 		console.debug('params: ' + util.inspect(params));
 		Ember.run(function() {
 			var users = data['Users'];
-			var username = users.user_name;
-			console.debug('user_name: ' + username);
-//			users.roles.forEach(function(role) {
-//				console.debug('role: ' + role)
-//			});
+			users.roles.forEach(function(role) {
+				console.debug('role: ' + role)
+			});
 			_this.resolve({
 				// FIXME:
-//				token : response.session.token
-				account_id: username
+//				token : users.token
+				user_id: users.user_name,
+				user_roles: users.roles
 			});
 		});
 	},
@@ -92,14 +91,31 @@ App.ColorsAuthenticator = Ember.SimpleAuth.Authenticators.Base.extend({
 	invalidate : function() {
 		var _this = this;
 		return new Ember.RSVP.Promise(function(resolve) {
-			Ember.$.ajax({
-				url : _this.tokenEndpoint,
-				type : 'DELETE'
-			}).always(function() {
-				resolve();
-			})
+			_this.resolve = resolve;
+			if (!App.testMode) {
+				App.ajax.send({
+					name : 'router.logoff',
+					sender : _this,
+					data : {
+						auth : "Basic " + _this.hash
+					},
+					beforeSend : 'authBeforeSend',
+					success : 'logOffSuccessCallback',
+					error : 'logOffErrorCallback'
+				});
+			}
 		});
 	},
+
+	logOffSuccessCallback : function(data) {
+		console.log("invoked logout on the server successfully");
+		App.db.cleanUp();
+		resolve();
+	},
+
+	logOffErrorCallback : function(req) {
+		console.log("failed to invoke logout on the server");
+	}
 });
 
 App.ColorsAuthorizer =  Ember.SimpleAuth.Authorizers.Base.extend({

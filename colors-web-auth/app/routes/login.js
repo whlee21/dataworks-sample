@@ -16,7 +16,8 @@ App.LoginRoute = Ember.Route.extend({
 		// transition to 'colors' when authentication succeeds
 		sessionAuthenticationSucceeded: function() {
 			console.debug('LoginRoute.sessionAuthenticationSucceeded');
-			console.debug('session.account');
+//			var account = this.get('session').account();
+//			console.debug('session.account: ' + account);
 			this.transitionTo('colors');
 		},
 		
@@ -29,7 +30,7 @@ App.LoginRoute = Ember.Route.extend({
 		invalidateSession: function() {
 			console.debug('LoginRoute.invalidateSession');
 		},
-		
+
 		sessionInvalidationSucceeded: function() {
 			console.debug('LoginRoute.sessionInvalidationSucceeded');
 		},

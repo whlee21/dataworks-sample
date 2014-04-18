@@ -22,6 +22,8 @@ Em.I18n.translations = {
   'app.reloadPopup.link': 'Reload Page',
   'app.reloadPopup.text': 'Trying to connect to server...',
   'app.reloadPopup.header': 'Reload Page',
+  'app.signout':'Sign out',
+  'app.settings':'Settings',
 
   'home':'Home',
   'apply':'apply',

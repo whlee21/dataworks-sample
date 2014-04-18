@@ -20,7 +20,6 @@ var App = require('app');
 App.db = {};
 var InitialData =  {
   'app': {
-    'loginName': '',
     'configs': []
   },
 };
@@ -81,8 +80,6 @@ App.db.mergeStorage = function() {
   }
 };
 
-console.log('before cleanup');
-
 // called whenever user logs in
 if (localStorage.getObject('colors') == null) {
   console.log('doing a cleanup');
@@ -104,13 +101,6 @@ App.db.set = function (namespace, key, value) {
 /*
  * setter methods
  */
-
-App.db.setLoginName = function (name) {
-  console.log('TRACE: Entering db:setLoginName function');
-  App.db.data = localStorage.getObject('colors');
-  App.db.data.app.loginName = name;
-  localStorage.setObject('colors', App.db.data);
-};
 
 /**
  * Set user model to db
@@ -148,12 +138,6 @@ App.db.getUser = function () {
   console.log('TRACE: Entering db:getUser function');
   App.db.data = localStorage.getObject('colors');
   return App.db.data.app.user;
-};
-
-App.db.getLoginName = function () {
-  console.log('Trace: Entering db:getLoginName function');
-  App.db.data = localStorage.getObject('colors');
-  return App.db.data.app.loginName;
 };
 
 App.db.getConfigs = function () {

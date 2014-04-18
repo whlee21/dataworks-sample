@@ -40,7 +40,6 @@ var urls = {
 			}
 		}
 	},
-	
 
 	'router.authentication' : {
 		'real' : '/colors',
@@ -66,10 +65,6 @@ var urls = {
 		}
 	},
 	
-	'router.login2' : {
-		'real' : '/colors',
-		'mock' : '/data/colors.json'
-	},
 	'router.logoff' : {
 		'real' : '/logout',
 		'mock' : ''

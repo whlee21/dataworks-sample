@@ -2,7 +2,6 @@ window.App = require('app');
 
 require('config');
 require('messages');
-console.log('import utils/db');
 require('utils/db');
 require('utils/ajax');
 require('adapter');
