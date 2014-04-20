@@ -10,5 +10,11 @@ DELETE	/api/v1/colors			controllers.Colors.delete
 
 GET		/api/v1/users/:id		controllers.Users.login(id: String)
 
+GET     /login                  securesocial.controllers.LoginPage.login
+GET     /logout                 securesocial.controllers.LoginPage.logout
+
+
 # Map static resources from the /public folder to the /assets URL path
 GET     /*file               	controllers.Assets.at(path="/public", file)
+
+GET     /not-authorized         securesocial.controllers.ProviderController.notAuthorized
