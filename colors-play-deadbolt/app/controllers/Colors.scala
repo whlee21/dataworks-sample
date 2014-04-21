@@ -19,7 +19,6 @@ import scala.slick.driver.JdbcProfile
 import be.objectify.deadbolt.scala.DeadboltActions
 import security.MyDeadboltHandler
 import securesocial.core.SecureSocial
-import securesocial.core.SecureSocial
 import scala.concurrent.Future
 import play.api.libs.concurrent.Akka
 
@@ -48,12 +47,9 @@ object Colors extends Controller with DeadboltActions with SecureSocial {
     case (_, id) => id
   }
 
-  def list = SecuredAction.async { implicit request =>
-    Future {
-      val colors = DB.withSession { implicit s: play.api.db.slick.Session =>
-        Colors.list
-      }
-
+  def list = SecuredAction(ajaxCall = true) { implicit request =>
+    DB withSession { implicit s: play.api.db.slick.Session =>
+      val colors = Colors.list
       Logger.debug(colors.toString)
 
       val colorsJson = Json.obj("colors" -> Json.toJson(colors))
@@ -63,6 +59,7 @@ object Colors extends Controller with DeadboltActions with SecureSocial {
     }
   }
 
+  /*
   def insert = SubjectPresent(new MyDeadboltHandler) {
     DBAction(parse.json) { implicit rs =>
       try {
@@ -85,23 +82,70 @@ object Colors extends Controller with DeadboltActions with SecureSocial {
       }
     }
   }
+  */
 
-  def delete = Restrict(Array("admin"), new MyDeadboltHandler) {
-    DBAction(parse.json) { implicit rs =>
-      try {
-        val colorJson = rs.request.body
-        Logger.debug("delete\n" + Json.prettyPrint(colorJson))
-
-        val color = colorJson.as[Color]
-        Logger.debug("color: " + color)
-
-        Colors.filter(_.id === color.id).delete
-
-        Ok(colorJson)
-      } catch {
-        case e: IllegalArgumentException =>
-          BadRequest("Color not found")
+  def insert = SecuredAction(ajaxCall = true) {
+    implicit request =>
+      DB withSession {
+        implicit s: play.api.db.slick.Session =>
+          try {
+            Logger.debug("request.body = " + request.body.asJson.get)
+            //            val colorJson = request.body.asJson.get
+            request.body.asJson match {
+              case None => BadRequest(Json.toJson("can't insert empty value..."))
+              case Some(colorJson) => {
+                Logger.debug(Json.prettyPrint(colorJson))
+                val colorVal = (colorJson \ "color" \ "color").as[String]
+                val newId = colorsAutoInc.insert(colorVal)
+                val newColor = Color(newId, colorVal)
+                Created(Json.toJson(newColor))
+              }
+            }
+          } catch {
+            case e: IllegalArgumentException =>
+              BadRequest(Json.toJson(e.getMessage))
+          }
       }
-    }
   }
+
+  //  def delete = Restrict(Array("admin"), new MyDeadboltHandler) {
+  //    DBAction(parse.json) { implicit rs =>
+  //      try {
+  //        val colorJson = rs.request.body
+  //        Logger.debug("delete\n" + Json.prettyPrint(colorJson))
+  //
+  //        val color = colorJson.as[Color]
+  //        Logger.debug("color: " + color)
+  //
+  //        Colors.filter(_.id === color.id).delete
+  //
+  //        Ok(colorJson)
+  //      } catch {
+  //        case e: IllegalArgumentException =>
+  //          BadRequest("Color not found")
+  //      }
+  //    }
+  //  }
+
+  def delete = SecuredAction(ajaxCall = true) {
+    implicit request =>
+      DB withSession {
+        implicit s: play.api.db.slick.Session =>
+          try {
+            val colorJson = request.body.asJson.get
+            Logger.debug("delete\n" + Json.prettyPrint(colorJson))
+
+            val color = colorJson.as[Color]
+            Logger.debug("color: " + color)
+
+            Colors.filter(_.id === color.id).delete
+
+            NoContent
+          } catch {
+            case e: IllegalArgumentException =>
+              BadRequest(Json.toJson(e.getMessage))
+          }
+      }
+  }
+
 }

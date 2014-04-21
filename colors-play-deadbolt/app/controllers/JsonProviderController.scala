@@ -149,7 +149,8 @@ object JsonProviderController extends Controller with SecureSocial {
 //      "user"
 //    ]
 //  }
-        val userString = "{\"Users\" : { \"user_name\":\"admin@example.com\", \"roles\":[\"admin\", \"user\"]}}"
+        val username = user.identityId.userId
+        val userString = "{\"Users\" : { \"user_name\":\"" +  username + "\", \"roles\":[\"admin\", \"user\"]}}"
         val userJson = Json.parse(userString)
         Ok(userJson).withSession(withSession -
           SecureSocial.OriginalUrlKey -
