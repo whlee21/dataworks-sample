@@ -5,6 +5,7 @@ import play.api._
 import play.api.Play.current
 import play.api.data.Forms._
 import play.api.db.slick._
+import play.api.db.slick.Session
 import play.api.db.slick.Config.driver.simple._
 import play.api.libs.functional.syntax._
 import play.api.libs.json.JsPath
@@ -17,8 +18,12 @@ import play.api.mvc.BodyParsers._
 import scala.slick.driver.JdbcProfile
 import be.objectify.deadbolt.scala.DeadboltActions
 import security.MyDeadboltHandler
+import securesocial.core.SecureSocial
+import securesocial.core.SecureSocial
+import scala.concurrent.Future
+import play.api.libs.concurrent.Akka
 
-object Colors extends Controller with DeadboltActions {
+object Colors extends Controller with DeadboltActions with SecureSocial {
 
   // json serializer
   implicit val colorWrites: Writes[Color] = (
@@ -31,6 +36,9 @@ object Colors extends Controller with DeadboltActions {
     (JsPath \ "color" \ "id").read[Long] and
     (JsPath \ "color" \ "color").read[String]
   )(Color.apply _)
+
+  implicit val slickExecutionContext =
+    Akka.system.dispatchers.lookup("play.akka.actor.slick-context")
   
   // create an instance of the table
   val Colors = TableQuery[ColorsTable]
@@ -39,16 +47,20 @@ object Colors extends Controller with DeadboltActions {
   private val colorsAutoInc = Colors.map(c => (c.color)) returning Colors.map(_.id) into {
     case (_, id) => id
   }
-  
-  def list = DBAction { implicit rs =>
-    val colors = Colors.list
-    
-    Logger.debug(colors.toString)
-    
-    val colorsJson = Json.obj("colors" -> Json.toJson(colors))
-    Logger.debug(Json.prettyPrint(colorsJson))
-    
-    Ok(colorsJson)
+
+  def list = SecuredAction.async { implicit request =>
+    Future {
+      val colors = DB.withSession { implicit s: play.api.db.slick.Session =>
+        Colors.list
+      }
+
+      Logger.debug(colors.toString)
+
+      val colorsJson = Json.obj("colors" -> Json.toJson(colors))
+      Logger.debug(Json.prettyPrint(colorsJson))
+
+      Ok(colorsJson)
+    }
   }
 
   def insert = SubjectPresent(new MyDeadboltHandler) {

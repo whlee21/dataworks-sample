@@ -75,13 +75,13 @@ App.ColorsAuthenticator = Ember.SimpleAuth.Authenticators.Base.extend({
 	},
 
 	loginErrorCallback : function(request, ajaxOptions, error, opt) {
-		console.debug('loginFailCallback');
+		console.debug('loginErrorCallback');
 		var _this = this;
-//		console.debug('request: ' + util.inspect(request));
-//		console.debug('request.statusCode: ' + request.statusCode);
-//		console.debug('ajaxOptions: ' + util.inspect(ajaxOptions));
-//		console.debug('error: ' + util.inspect(error));
-//		console.debug('opt: ' + util.inspect(opt));
+		console.debug('request: ' + util.inspect(request));
+		console.debug('request.statusCode: ' + request.statusCode);
+		console.debug('ajaxOptions: ' + util.inspect(ajaxOptions));
+		console.debug('error: ' + util.inspect(error));
+		console.debug('opt: ' + util.inspect(opt));
 		Ember.run(function() {
 			// FIXME:
 			_this.reject(request.responseText);

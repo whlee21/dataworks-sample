@@ -8,3 +8,4 @@
 10002:securesocial.core.providers.GoogleProvider
 10004:securesocial.core.providers.UsernamePasswordProvider
 10006:service.MyEventListener
+10009:securesocial.core.providers.JsonUsernamePasswordProvider

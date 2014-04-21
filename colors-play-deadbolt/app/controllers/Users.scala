@@ -19,7 +19,7 @@ import be.objectify.deadbolt.scala.DeadboltActions
 import security.MyDeadboltHandler
 import play.mvc.Http
 import play.api.http.HeaderNames
-import securesocial.core.Registry
+import play.api.mvc.Session
 import securesocial.core.SocialUser
 import securesocial.core.IdentityId
 import securesocial.core.OAuth2Info
@@ -34,8 +34,15 @@ import securesocial.core.providers.UsernamePasswordProvider
 import securesocial.core.AuthenticationMethod
 import securesocial.views.html.provider
 import securesocial.core.providers.utils.PasswordHasher
+import securesocial.core.Registry
+import securesocial.core.Identity
+import securesocial.core.AccessDeniedException
+import securesocial.core.providers.utils.RoutesHelper
+import play.api.i18n.Messages
 
-object Users extends Controller {
+object Users extends Controller with securesocial.core.SecureSocial {
+
+  private val logger = play.api.Logger("controller.Users")
 
   // json serializer
   //  implicit val userWrites: Writes[User] = (
@@ -51,9 +58,6 @@ object Users extends Controller {
 
   private implicit val readsOAuth2Info = Json.reads[OAuth2Info]
 
-  private val providerName = "userpass"
-  private val bcryptHasher = PasswordHasher.BCryptHasher
-
   // create an instance of the table
   val Users = TableQuery[ColorsUserTable]
 
@@ -61,6 +65,18 @@ object Users extends Controller {
   //  private val usersAutoInc = Users.map(c => (c.color)) returning Users.map(_.id) into {
   //    case (_, id) => id
   //  }
+
+  val Root = "/"
+
+  val onLoginGoTo = "securesocial.onLoginGoTo"
+
+  val ApplicationContext = "application.context"
+
+  def toUrl(session: Session) = session.get(SecureSocial.OriginalUrlKey).getOrElse(landingUrl)
+
+  def landingUrl = Play.configuration.getString(onLoginGoTo).getOrElse(
+    Play.configuration.getString(ApplicationContext).getOrElse(Root)
+  )
 
   def readQueryString(request: Request[_]): Option[Either[Result, (String, String)]] = {
 
@@ -87,7 +103,7 @@ object Users extends Controller {
             val credentials = new String(decodedBytes).split(":", 2)
             credentials match {
               case Array(username, password) => Right(username -> password)
-              case _ => Left(BadRequest("Invalid basic authentication"))
+              case _                         => Left(BadRequest("Invalid basic authentication"))
             }
           }
         }
@@ -96,74 +112,37 @@ object Users extends Controller {
     }
   }
 
-  def authenticate(username: String, password: String) = {
-    false
-  }
+  //  def authenticate(username: String, password: String) = {
+  //    false
+  //  }
 
-  def AuthenticatedAction(f: Request[AnyContent] => Result): Action[AnyContent] = {
-    Action { request =>
-      var maybeCredentials = readQueryString(request) orElse
-        readBasicAuthentication(request.headers)
+  //  def AuthenticatedAction(f: Request[AnyContent] => Result): Action[AnyContent] = {
+  //    Action { request =>
+  //      var maybeCredentials = readQueryString(request) orElse
+  //        readBasicAuthentication(request.headers)
+  //
+  //      maybeCredentials.map { resultOrCredentials =>
+  //
+  //        resultOrCredentials match {
+  //          case Left(errorResult) => errorResult
+  //
+  //          case Right(credentials) => {
+  //            val (user, password) = credentials
+  //            if (authenticate(user, password)) {
+  //              f(request)
+  //            } else {
+  //              Unauthorized("Invalid username or password")
+  //            }
+  //          }
+  //        }
+  //      }.getOrElse {
+  //        val authenticate = (HeaderNames.WWW_AUTHENTICATE, "Basic")
+  //        Unauthorized.withHeaders(authenticate)
+  //      }
+  //    }
+  //  }
 
-      maybeCredentials.map { resultOrCredentials =>
-
-        resultOrCredentials match {
-          case Left(errorResult) => errorResult
-
-          case Right(credentials) => {
-            val (user, password) = credentials
-            if (authenticate(user, password)) {
-              f(request)
-            } else {
-              Unauthorized("Invalid username or password")
-            }
-          }
-        }
-      }.getOrElse {
-        val authenticate = (HeaderNames.WWW_AUTHENTICATE, "Basic")
-        Unauthorized.withHeaders(authenticate)
-      }
-    }
-  }
-
-  def login(id: String) = Action { implicit request =>
-
-    var maybeCredentials = readBasicAuthentication(request.headers)
-
-    maybeCredentials.map { resultOrCredentials =>
-
-      resultOrCredentials match {
-        case Left(errorResult) => errorResult
-
-        case Right(credentials) => {
-          val (username, password) = credentials
-          val email = "admin@example.com"
-
-          Logger.debug("username = " + username + ", password = " + password)
-
-          val hasher = Registry.hashers.get(bcryptHasher).get
-
-          val provider = Registry.providers.get(providerName).get
-          val id = if (UsernamePasswordProvider.withUserNameSupport) username else email
-          val identityId = new IdentityId(username, providerName)
-          val u = SocialUser(identityId, "", "", "", Some(email), None, provider.authMethod, passwordInfo = Some(hasher.hash(password)))
-          val filledUser = provider.fillProfile(u)
-
-          UserService.find(filledUser.identityId) map { user =>
-            Logger.debug("UserService.find")
-            val newSession = Events.fire(new LoginEvent(user)).getOrElse(session)
-            Authenticator.create(user).fold(
-              error => throw error,
-              authenticator => Ok(Json.obj("sessionId" -> authenticator.id))
-                .withSession(newSession - SecureSocial.OriginalUrlKey - IdentityProvider.SessionId - OAuth1Provider.CacheKey)
-                .withCookies(authenticator.toCookie))
-          } getOrElse NotFound(Json.obj("error" -> "user not found"))
-        }
-      }
-    }.getOrElse {
-      val authenticate = (HeaderNames.WWW_AUTHENTICATE, "Basic")
-      Unauthorized.withHeaders(authenticate)
-    }
-  }
-
+  //  def createUser(id: String) = Action { implicit request =>
+  //    Created("ok")
+  //  }
 }

@@ -8,7 +8,9 @@ GET		/api/v1/colors			controllers.Colors.list
 POST	/api/v1/colors			controllers.Colors.insert
 DELETE	/api/v1/colors			controllers.Colors.delete
 
-GET		/api/v1/users/:id		controllers.Users.login(id: String)
+#GET	/api/v1/users/:id				controllers.Users.login(id: String)
+GET		/api/v1/authenticate/:provider	controllers.JsonProviderController.authenticate(provider, redirectTo: Option[String])
+#POST	/api/v1/users/:id		controllers.Users.createUser(id: String)
 
 GET     /login                  securesocial.controllers.LoginPage.login
 GET     /logout                 securesocial.controllers.LoginPage.logout

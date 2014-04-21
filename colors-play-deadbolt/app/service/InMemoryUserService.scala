@@ -26,6 +26,7 @@ import securesocial.core.providers.UsernamePasswordProvider
 import securesocial.core.providers.utils.GravatarHelper
 import securesocial.core.providers.utils.PasswordHasher
 import securesocial.core.providers.utils.BCryptPasswordHasher
+import securesocial.core.providers.JsonUsernamePasswordProvider
 
 /**
  * A Sample In Memory user service in Scala
@@ -48,39 +49,21 @@ class InMemoryUserService(application: Application) extends UserServicePlugin(ap
 
     case class UserInfo(userName: String, userPassword: String, email: String, firstName: String, lastName: String)
 
-    val info = UserInfo("admin", "admin", "admin@example.com", "", "")
+    val userInfo = UserInfo("admin", "admin", "admin@example.com", "", "")
 
-    val id = if (UsernamePasswordProvider.withUserNameSupport) info.userName else info.email
-    val identityId = IdentityId(id, UsernamePasswordProvider.UsernamePassword)
+    val id = if (UsernamePasswordProvider.withUserNameSupport) userInfo.userName else userInfo.email
+    val identityId = IdentityId(id, JsonUsernamePasswordProvider.JsonUsernamePassword)
     
-//    val hasher = Registry.hashers.get(bcryptHasher).get
-//    val user = SocialUser(
-//      identityId,
-//      info.firstName,
-//      info.lastName,
-//      "%s %s".format(info.firstName, info.lastName),
-//      Some(info.email),
-//      None,
-//      AuthenticationMethod.UserPassword,
-//      passwordInfo = Some(hasher.hash(info.userPassword)))
-
-      
     val user = SocialUser(
       identityId,
-      info.firstName,
-      info.lastName,
-      "%s %s".format(info.firstName, info.lastName),
-      Some(info.email),
+      userInfo.firstName,
+      userInfo.lastName,
+      "%s %s".format(userInfo.firstName, userInfo.lastName),
+      Some(userInfo.email),
       None,
       AuthenticationMethod.UserPassword,
-      passwordInfo = Some(bcryptHasher.hash(info.userPassword)))
+      passwordInfo = Some(bcryptHasher.hash(userInfo.userPassword)))
     val saved = UserService.save(user)
-
-    //    
-    //    
-    //    val user = SocialUser(IdentityId("admin", UsernamePasswordProvider.UsernamePassword),
-    //        "", "", "", Some("whlee21@gmail.com"), None, AuthenticationMethod.UserPassword)
-    //    users = users + ("admin" -> User("admin", List(user)))
   }
 
   //private var identities = Map[String, Identity]()

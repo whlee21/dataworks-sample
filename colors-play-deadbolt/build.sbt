@@ -19,13 +19,14 @@ libraryDependencies ++= Seq(
   "org.slf4j" % "slf4j-nop" % "1.6.4",
   "me.lessis" %% "base64" % "0.1.0",
   "be.objectify" %% "deadbolt-scala" % "2.2-RC2" exclude("org.scala-stm", "scala-stm_2.10.0"),
-  "ws.securesocial" %% "securesocial" % "2.1.3"
+  "ws.securesocial" %% "securesocial" % "master-SNAPSHOT"
 )
 
 play.Project.playScalaSettings
 
 resolvers ++= Seq(
-    Resolver.url("Objectify Play Repository", new URL("http://schaloner.github.com/releases"))(Resolver.ivyStylePatterns)
+    Resolver.url("Objectify Play Repository", new URL("http://schaloner.github.com/releases"))(Resolver.ivyStylePatterns),
+    Resolver.sonatypeRepo("snapshots")
 )
 
 resolvers += "softprops-maven" at "http://dl.bintray.com/content/softprops/maven"
