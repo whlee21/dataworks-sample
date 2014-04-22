@@ -108,13 +108,14 @@ App.ColorsAuthenticator = Ember.SimpleAuth.Authenticators.Base.extend({
 	},
 
 	logOffSuccessCallback : function(data) {
-		console.log("invoked logout on the server successfully");
+		console.debug("invoked logout on the server successfully");
 		App.db.cleanUp();
-		resolve();
+		this.resolve();
 	},
 
 	logOffErrorCallback : function(req) {
-		console.log("failed to invoke logout on the server");
+		console.debug("failed to invoke logout on the server");
+		console.debug("whlee21 req = " + util.inspect(req));
 	}
 });
 

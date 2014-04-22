@@ -49,21 +49,39 @@ class InMemoryUserService(application: Application) extends UserServicePlugin(ap
 
     case class UserInfo(userName: String, userPassword: String, email: String, firstName: String, lastName: String)
 
-    val userInfo = UserInfo("admin", "admin", "admin@example.com", "", "")
+    val adminUserInfo = UserInfo("admin", "admin", "admin@example.com", "", "")
 
-    val id = if (UsernamePasswordProvider.withUserNameSupport) userInfo.userName else userInfo.email
-    val identityId = IdentityId(id, JsonUsernamePasswordProvider.JsonUsernamePassword)
+    val adminId = if (UsernamePasswordProvider.withUserNameSupport) adminUserInfo.userName else adminUserInfo.email
+    val adminIdentityId = IdentityId(adminId, JsonUsernamePasswordProvider.JsonUsernamePassword)
     
-    val user = SocialUser(
-      identityId,
-      userInfo.firstName,
-      userInfo.lastName,
-      "%s %s".format(userInfo.firstName, userInfo.lastName),
-      Some(userInfo.email),
+    val adminUser = SocialUser(
+      adminIdentityId,
+      adminUserInfo.firstName,
+      adminUserInfo.lastName,
+      "%s %s".format(adminUserInfo.firstName, adminUserInfo.lastName),
+      Some(adminUserInfo.email),
       None,
       AuthenticationMethod.UserPassword,
-      passwordInfo = Some(bcryptHasher.hash(userInfo.userPassword)))
-    val saved = UserService.save(user)
+      passwordInfo = Some(bcryptHasher.hash(adminUserInfo.userPassword)))
+
+    val adminSaved = UserService.save(adminUser)
+    
+    val userUserInfo = UserInfo("user", "user", "user@example.com", "", "")
+
+    val userId = if (UsernamePasswordProvider.withUserNameSupport) userUserInfo.userName else userUserInfo.email
+    val userIdentityId = IdentityId(userId, JsonUsernamePasswordProvider.JsonUsernamePassword)
+    
+    val userUser = SocialUser(
+      userIdentityId,
+      userUserInfo.firstName,
+      userUserInfo.lastName,
+      "%s %s".format(userUserInfo.firstName, userUserInfo.lastName),
+      Some(userUserInfo.email),
+      None,
+      AuthenticationMethod.UserPassword,
+      passwordInfo = Some(bcryptHasher.hash(userUserInfo.userPassword)))
+
+    val userSaved = UserService.save(userUser)
   }
 
   //private var identities = Map[String, Identity]()

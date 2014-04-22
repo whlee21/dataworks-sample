@@ -187,6 +187,9 @@ var ajax = Em.Object.extend({
       }
     };
     opt.error = function (request, ajaxOptions, error) {
+      console.debug("whlee21 request = " + util.inspect(request));
+      console.debug("whlee21 ajaxOptions = " + util.inspect(ajaxOptions));
+      console.debug("whlee21 error = " + util.inspect(error));
       if (config.error) {
         config.sender[config.error](request, ajaxOptions, error, opt, params);
       } else {

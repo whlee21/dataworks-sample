@@ -127,25 +127,27 @@ object Colors extends Controller with DeadboltActions with SecureSocial {
   //    }
   //  }
 
-  def delete = SecuredAction(ajaxCall = true) {
-    implicit request =>
-      DB withSession {
-        implicit s: play.api.db.slick.Session =>
-          try {
-            val colorJson = request.body.asJson.get
-            Logger.debug("delete\n" + Json.prettyPrint(colorJson))
+  def delete = Restrict(Array("admin"), new MyDeadboltHandler) {
+    SecuredAction(ajaxCall = true) {
+      implicit request =>
+        DB withSession {
+          implicit s: play.api.db.slick.Session =>
+            try {
+              val colorJson = request.body.asJson.get
+              Logger.debug("delete\n" + Json.prettyPrint(colorJson))
 
-            val color = colorJson.as[Color]
-            Logger.debug("color: " + color)
+              val color = colorJson.as[Color]
+              Logger.debug("color: " + color)
 
-            Colors.filter(_.id === color.id).delete
+              Colors.filter(_.id === color.id).delete
 
-            NoContent
-          } catch {
-            case e: IllegalArgumentException =>
-              BadRequest(Json.toJson(e.getMessage))
-          }
-      }
+              NoContent
+            } catch {
+              case e: IllegalArgumentException =>
+                BadRequest(Json.toJson(e.getMessage))
+            }
+        }
+    }
   }
 
 }

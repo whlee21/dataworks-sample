@@ -136,22 +136,15 @@ object JsonProviderController extends Controller with SecureSocial {
     val withSession = Events.fire(new LoginEvent(user)).getOrElse(session)
     Authenticator.create(user) match {
       case Right(authenticator) => {
-//        Redirect(toUrl(withSession)).withSession(withSession -
-//          SecureSocial.OriginalUrlKey -
-//          IdentityProvider.SessionId -
-//          OAuth1Provider.CacheKey).withCookies(authenticator.toCookie)
         
-        
-//  "Users" : {
-//    "user_name" : "admin",
-//    "roles" : [
-//      "admin",
-//      "user"
-//    ]
-//  }
+        // for test
         val username = user.identityId.userId
-        val userString = "{\"Users\" : { \"user_name\":\"" +  username + "\", \"roles\":[\"admin\", \"user\"]}}"
+        val userString = username match {
+          case ("admin" | "admin@example.com") => "{\"Users\" : { \"user_name\":\"" +  username + "\", \"roles\":[\"admin\", \"user\"]}}"
+          case _ => "{\"Users\" : { \"user_name\":\"" +  username + "\", \"roles\":[\"user\"]}}"
+        }
         val userJson = Json.parse(userString)
+        
         Ok(userJson).withSession(withSession -
           SecureSocial.OriginalUrlKey -
           IdentityProvider.SessionId -
