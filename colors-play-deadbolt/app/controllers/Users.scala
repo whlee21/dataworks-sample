@@ -43,14 +43,11 @@ import securesocial.core.LogoutEvent
 
 object Users extends Controller {
 
-  //  val onLogoutGoTo = "securesocial.onLogoutGoTo"
-
-  //  def login(provider: String) = Action { implicit request =>
-  //    JsonProviderController.authenticate(provider)
-  //  }
+  def login(provider: String, redirectTo: Option[String]) = Action { implicit request =>
+    Redirect(securesocial.controllers.routes.JsonProviderController.authenticate(provider, redirectTo))
+  }
 
   def logout = Action { implicit request =>
-    //    val to = Play.configuration.getString(onLogoutGoTo).getOrElse(RoutesHelper.login().absoluteURL(IdentityProvider.sslEnabled))
     val user = for (
       authenticator <- SecureSocial.authenticatorFromRequest;
       user <- UserService.find(authenticator.identityId)

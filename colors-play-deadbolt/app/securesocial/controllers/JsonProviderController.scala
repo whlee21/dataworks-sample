@@ -1,18 +1,28 @@
-package controllers
+package securesocial.controllers
 
-import play.api.mvc._
-import play.api.i18n.Messages
-import securesocial.core._
 import play.api.Play
-import Play.current
-import providers.utils.RoutesHelper
-import securesocial.core.LoginEvent
-import securesocial.core.AccessDeniedException
-import scala.Some
+import play.api.Play.current
 import play.api.http.HeaderNames
-import securesocial.controllers.TemplatesPlugin
-import play.mvc.Http
+import play.api.i18n.Messages
 import play.api.libs.json.Json
+import play.api.mvc.Action
+import play.api.mvc.Controller
+import play.api.mvc.Cookies
+import play.api.mvc.RequestHeader
+import play.api.mvc.Session
+import play.api.mvc.SimpleResult
+import securesocial.core.AccessDeniedException
+import securesocial.core.Authenticator
+import securesocial.core.Events
+import securesocial.core.Identity
+import securesocial.core.IdentityProvider
+import securesocial.core.LoginEvent
+import securesocial.core.OAuth1Provider
+import securesocial.core.Registry
+import securesocial.core.SecureSocial
+import securesocial.core.UserService
+import securesocial.core.providers.utils.RoutesHelper
+import play.api.mvc.Security
 
 /**
  * A controller to provide the authentication entry point
@@ -145,10 +155,10 @@ object JsonProviderController extends Controller with SecureSocial {
         }
         val userJson = Json.parse(userString)
         
-        Ok(userJson).withSession(withSession -
-          SecureSocial.OriginalUrlKey -
-          IdentityProvider.SessionId -
-          OAuth1Provider.CacheKey).withCookies(authenticator.toCookie)
+        Ok(userJson).withSession(withSession - SecureSocial.OriginalUrlKey
+            - IdentityProvider.SessionId - OAuth1Provider.CacheKey)
+          .withSession(Security.username -> username)
+          .withCookies(authenticator.toCookie)
       }
       case Left(error) => {
         // improve this

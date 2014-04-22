@@ -109,7 +109,7 @@ App.ColorsAuthenticator = Ember.SimpleAuth.Authenticators.Base.extend({
 
 	logOffSuccessCallback : function(data) {
 		console.debug("invoked logout on the server successfully");
-		App.db.cleanUp();
+//		App.db.cleanUp();
 		this.resolve();
 	},
 

@@ -1,9 +1,14 @@
 <form class="form-signin" role="form" {{action authenticate on='submit'}}>
 	<h2 class="form-signin-heading">{{t 'login.header'}}</h2>
-	{{input id="identification" class="form-control" placeholder="Login id" value=identification}}
+	{{#if errorMessage}}
+  <div class="alert alert-danger">
+    {{errorMessage}}
+  </div>
+  {{/if}}
+	{{input id="identification" type="email" class="form-control" placeholder="Email address" value=identification}}
 	{{input id="password" type="password" class="form-control" placeholder="Password" value=password}}
 	<label class="checkbox">
-		<input type="checkbox" value="remember-me"> {{t 'login.remember'}}
+		<input type="checkbox" value="remember-me"> {{t 'login.rememberMe'}}
 	</label>
 	<button class="btn btn-lg btn-primary btn-block" type="submit">{{t 'login.loginButton'}}</button>
 </form>

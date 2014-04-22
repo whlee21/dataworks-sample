@@ -52,7 +52,7 @@ var urls = {
 	},
 		  
 	'router.login' : {
-		'real' : '/authenticate/jsonuserpass',
+		'real' : '/login/jsonuserpass',
 		'mock' : '/data/users/user_{usr}.json',
 		'format' : function(data) {
 			var statusCode = jQuery.extend({}, require('data/statusCodes'));

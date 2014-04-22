@@ -2,6 +2,10 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
+# SecureSocial
+GET		/api/v1/authenticate/:provider	securesocial.controllers.JsonProviderController.authenticate(provider, redirectTo: Option[String])
+#GET     /not-authorized         securesocial.controllers.ProviderController.notAuthorized
+
 # Home page
 GET   	/                      	controllers.Assets.at(path="/public", file="index.html")
 GET		/api/v1/colors			controllers.Colors.list
@@ -9,14 +13,10 @@ POST	/api/v1/colors			controllers.Colors.insert
 DELETE	/api/v1/colors			controllers.Colors.delete
 
 #GET	/api/v1/users/:id				controllers.Users.login(id: String)
-GET		/api/v1/authenticate/:provider	controllers.JsonProviderController.authenticate(provider, redirectTo: Option[String])
-#POST	/api/v1/users/:id		controllers.Users.createUser(id: String)
+#POST	/api/v1/users/:id				controllers.Users.createUser(id: String)
 
-#GET     /api/v1/login/:provider                  controllers.Users.login(provider: String)
-GET     /api/v1/logout                 controllers.Users.logout
-
+GET     /api/v1/login/:provider        	controllers.Users.login(provider: String, redirectTo: Option[String])
+GET     /api/v1/logout                	controllers.Users.logout
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /*file               	controllers.Assets.at(path="/public", file)
-
-GET     /not-authorized         securesocial.controllers.ProviderController.notAuthorized

@@ -63,7 +63,7 @@ Em.I18n.translations = {
   'login.username':'Username',
   'login.loginButton':'Sign in',
   'login.error':'Invalid username/password combination.',
-  'login.remember':'Remember me',
+  'login.rememberMe':'Remember me',
 
   'utils.ajax.errorMessage': 'Error message'
 };

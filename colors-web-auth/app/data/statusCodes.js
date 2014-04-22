@@ -35,7 +35,6 @@ module.exports = {
 	},
 	403: function () {
 		console.log("Error code 403: Forbidden.");
-    App.router.logOff();
 	},
 	404: function () {
 		console.log("Error code 404: URI not found.");
